@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>چی‌چی‌مارکت</title>
+<style>
+:root{--p:#6d28d9;--p2:#4f46e5;--bg:#f6f7fb;--card:#fff;--text:#172033;--muted:#667085;--ok:#16803c;--bad:#c62828;--border:#e5e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.container{width:min(1180px,94%);margin:auto}
+header{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 3px 15px #0002}
+.nav{min-height:68px;display:flex;align-items:center;gap:14px;justify-content:space-between}.brand{font-size:23px;font-weight:900}.nav-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{padding:10px 14px;border-radius:10px;background:#fff;color:#30236e;font-weight:700}.btn.primary{background:var(--p);color:#fff}.btn.dark{background:#111827;color:#fff}.btn.danger{background:#fee2e2;color:#991b1b}.btn.small{padding:7px 10px;font-size:13px}
+main{padding:25px 0 50px}.hero{background:linear-gradient(135deg,#ede9fe,#eef2ff);border:1px solid #ddd6fe;border-radius:18px;padding:28px;margin-bottom:22px}.hero h1{margin:0 0 8px}.hero p{margin:0;color:#475467}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:15px;overflow:hidden;box-shadow:0 2px 8px #00000008}.card-body{padding:14px}.product-img{width:100%;height:190px;object-fit:cover;background:#eee}.price{font-size:19px;font-weight:900;color:var(--p)}.muted{color:var(--muted);font-size:13px}.stock{margin-top:6px;font-size:13px}.stock.out{color:var(--bad)}.stock.in{color:var(--ok)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.empty{text-align:center;padding:35px;background:#fff;border-radius:15px;border:1px dashed #ccd1da;color:var(--muted)}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:15px;z-index:50}.modal.open{display:flex}.modal-box{background:#fff;width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:18px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.close{background:#f1f5f9;border-radius:9px;padding:7px 11px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field input,.field select,.field textarea{border:1px solid #d0d5dd;border-radius:10px;padding:10px;background:#fff}.field textarea{min-height:90px;resize:vertical}.summary{background:#f8fafc;border-radius:12px;padding:14px;margin:14px 0}.row{display:flex;justify-content:space-between;gap:10px;margin:8px 0}.total{font-size:20px;font-weight:900;border-top:1px solid var(--border);padding-top:10px}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#eef2ff;color:#4338ca}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.tab{padding:9px 12px;border-radius:9px;background:#eef2f6}.tab.active{background:var(--p);color:#fff}.panel-section{display:none}.panel-section.active{display:block}.admin-table{width:100%;border-collapse:collapse;background:#fff}.admin-table th,.admin-table td{padding:9px;border-bottom:1px solid var(--border);text-align:right;vertical-align:top}.admin-table th{background:#f8fafc}.thumbs{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.thumb{width:62px;height:62px;object-fit:cover;border-radius:8px;border:2px solid transparent;cursor:pointer}.thumb.main{border-color:var(--p)}.image-item{display:flex;gap:8px;align-items:center;background:#f8fafc;padding:8px;border-radius:8px;margin:5px 0}.image-item img{width:55px;height:55px;object-fit:cover;border-radius:6px}.notice{padding:10px 12px;border-radius:10px;margin:10px 0}.notice.ok{background:#ecfdf3;color:#166534}.notice.err{background:#fef2f2;color:#991b1b}.stars{color:#f59e0b;letter-spacing:1px}.cart-count{background:#ef4444;color:#fff;border-radius:999px;padding:2px 7px;font-size:12px}.product-detail{display:grid;grid-template-columns:1fr 1fr;gap:18px}.detail-main{width:100%;height:360px;object-fit:cover;border-radius:12px;background:#eee}.review{border-top:1px solid var(--border);padding:10px 0}.footer{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+@media(max-width:700px){.form-grid,.product-detail{grid-template-columns:1fr}.detail-main{height:260px}.nav{align-items:flex-start;padding:12px 0}.nav-actions{justify-content:flex-end}.admin-table{font-size:12px}.admin-table th,.admin-table td{padding:7px}}
+</style>
+</head>
+<body>
+<header><div class="container nav">
+  <div class="brand">🛍️ چی‌چی‌مارکت</div>
+  <div class="nav-actions">
+    <button class="btn" onclick="openCart()">سبد خرید <span id="cartCount" class="cart-count">0</span></button>
+    <button class="btn" onclick="openAdminLogin()">مدیریت</button>
+  </div>
+</div></header>
+
+<main class="container">
+<section class="hero">
+  <h1>چی‌چی‌مارکت</h1>
+  <p>فروشگاه دموی تک‌فایلی؛ محصولات، سبد خرید، سفارش‌ها، نظرات و تنظیمات در مرورگر ذخیره می‌شوند.</p>
+</section>
+<div id="publicNotice"></div>
+<div id="products" class="grid"></div>
+</main>
+<footer class="footer">چی‌چی‌مارکت — نسخه Demo بدون نیاز به سرور</footer>
+
+<div id="modal" class="modal"><div class="modal-box" id="modalBox"></div></div>
+
+<script>
+"use strict";
+const KEY="chichi_market_v1";
+const DAY_NAMES=["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"];
+const STATUS=["جدید","در حال آماده‌سازی","ارسال شد","تحویل شد","لغو شد"];
+
+const defaultState={
+  products:[
+    {id:"p1",name:"هدفون بی‌سیم",price:850000,stock:8,description:"هدفون سبک و مناسب استفاده روزمره.",images:["https://picsum.photos/seed/headphone/700/500"],mainImage:0},
+    {id:"p2",name:"ماگ سرامیکی",price:220000,stock:14,description:"ماگ سرامیکی مناسب نوشیدنی‌های گرم.",images:["https://picsum.photos/seed/mug/700/500"],mainImage:0},
+    {id:"p3",name:"چراغ مطالعه",price:490000,stock:5,description:"چراغ مطالعه رومیزی با طراحی ساده.",images:["https://picsum.photos/seed/lamp/700/500"],mainImage:0}
+  ],
+  cart:[],
+  orders:[],
+  reviews:[],
+  settings:{
+    shipping:{شنبه:45000,یکشنبه:45000,"دوشنبه":50000,"سه‌شنبه":50000,"چهارشنبه":55000,"پنجشنبه":60000,"جمعه":70000},
+    gateway:"",
+    contact:{phone:"",email:"",address:""}
+  },
+  adminPassword:"mehradamir1394"
+};
+let state=load();
+
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw)return structuredClone(defaultState);
+    const x=JSON.parse(raw);
+    return Object.assign(structuredClone(defaultState),x,{settings:Object.assign(structuredClone(defaultState.settings),x.settings||{})});
+  }catch(e){return structuredClone(defaultState)}
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderProducts();updateCartCount()}
+function money(n){return Number(n||0).toLocaleString("fa-IR")+" تومان"}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function uid(prefix="id"){return prefix+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,8)}
+function notify(msg,ok=false){
+  document.getElementById("publicNotice").innerHTML='<div class="notice '+(ok?"ok":"err")+'">'+esc(msg)+'</div>';
+  setTimeout(()=>{document.getElementById("publicNotice").innerHTML=""},4000);
+}
+function renderProducts(){
+  const box=document.getElementById("products");
+  if(!state.products.length){box.innerHTML='<div class="empty">هنوز محصولی ثبت نشده است.</div>';return}
+  box.innerHTML=state.products.map(p=>{
+    const approved=state.reviews.filter(r=>r.productId===p.id&&r.approved);
+    const avg=approved.length?approved.reduce((a,r)=>a+r.rating,0)/approved.length:0;
+    const img=p.images?.[p.mainImage||0]||"";
+    return `<article class="card">
+      <img class="product-img" src="${esc(img)}" alt="${esc(p.name)}" onerror="this.style.display='none'">
+      <div class="card-body">
+        <h3>${esc(p.name)}</h3>
+        <div class="muted">${esc(p.description||"")}</div>
+        <div class="stars">${avg?("★".repeat(Math.round(avg))+"☆".repeat(5-Math.round(avg))):"☆☆☆☆☆"} <span class="muted">(${approved.length})</span></div>
+        <p class="price">${money(p.price)}</p>
+        <div class="stock ${p.stock>0?"in":"out"}">${p.stock>0?"موجودی: "+p.stock+" عدد":"ناموجود"}</div>
+        <div class="actions">
+          <button class="btn primary" onclick="openProduct('${p.id}')">مشاهده</button>
+          <button class="btn" ${p.stock<=0?"disabled":""} onclick="addToCart('${p.id}')">${p.stock>0?"افزودن به سبد":"ناموجود"}</button>
+        </div>
+      </div>
+    </article>`
+  }).join("");
+}
+function updateCartCount(){document.getElementById("cartCount").textContent=state.cart.reduce((a,x)=>a+x.qty,0)}
+function addToCart(id){
+  const p=state.products.find(x=>x.id===id);if(!p||p.stock<=0)return notify("این محصول ناموجود است.");
+  const item=state.cart.find(x=>x.productId===id);
+  if(item){if(item.qty>=p.stock)return notify("تعداد انتخاب‌شده بیشتر از موجودی است.");item.qty++}
+  else state.cart.push({productId:id,qty:1});
+  save();notify("محصول به سبد خرید اضافه شد.",true)
+}
+function cartItems(){return state.cart.map(i=>{const p=state.products.find(x=>x.id===i.productId);return p?{...i,p}:null}).filter(Boolean)}
+function openCart(){
+  const items=cartItems();
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>سبد خرید</h2><button class="close" onclick="closeModal()">✕</button></div>
+  ${items.length?items.map(i=>`<div class="summary"><div class="row"><b>${esc(i.p.name)}</b><span>${money(i.p.price*i.qty)}</span></div>
+  <div class="actions"><button class="btn small" onclick="changeQty('${i.productId}',-1)">−</button><span>${i.qty}</span><button class="btn small" onclick="changeQty('${i.productId}',1)">+</button><button class="btn danger small" onclick="removeCart('${i.productId}')">حذف</button></div></div>`).join(""):'<div class="empty">سبد خرید خالی است.</div>'}
+  ${items.length?`<div class="summary total"><div class="row"><span>جمع محصولات</span><b>${money(items.reduce((a,i)=>a+i.p.price*i.qty,0))}</b></div></div><button class="btn primary" onclick="openCheckout()">ادامه و ثبت سفارش</button>`:""}`;
+  openModal()
+}
+function changeQty(id,d){
+  const item=state.cart.find(x=>x.productId===id),p=state.products.find(x=>x.id===id);if(!item||!p)return;
+  const n=item.qty+d;if(n<=0)state.cart=state.cart.filter(x=>x.productId!==id);else if(n<=p.stock)item.qty=n;else return notify("تعداد بیشتر از موجودی مجاز نیست.");
+  save();openCart()
+}
+function removeCart(id){state.cart=state.cart.filter(x=>x.productId!==id);save();openCart()}
+function todayAtMidnight(){const d=new Date();d.setHours(0,0,0,0);return d}
+function isoDate(d){return d.toISOString().slice(0,10)}
+function minShipDate(){const d=todayAtMidnight();d.setDate(d.getDate()+3);return d}
+function weekdayName(dateStr){const d=new Date(dateStr+"T12:00:00");return DAY_NAMES[(d.getDay()+1)%7]}
+function openCheckout(){
+  if(!state.cart.length)return notify("سبد خرید خالی است.");
+  const min=isoDate(minShipDate());
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>ثبت سفارش</h2><button class="close" onclick="closeModal()">✕</button></div>
+  <div class="field"><label>تاریخ ارسال (اولین تاریخ مجاز: ${min})</label><input id="shipDate" type="date" min="${min}" onchange="updateCheckoutCost()"></div>
+  <div class="form-grid" style="margin-top:12px">
+    <div class="field"><label>نام و نام خانوادگی</label><input id="customerName" placeholder="نام کامل"></div>
+    <div class="field"><label>شماره موبایل ایران</label><input id="customerPhone" inputmode="tel" placeholder="09123456789"></div>
+    <div class="field full"><label>کد پستی</label><input id="postalCode" inputmode="numeric" maxlength="10" placeholder="۱۰ رقم"></div>
+    <div class="field full"><label>آدرس</label><textarea id="address" placeholder="آدرس کامل"></textarea></div>
+  </div>
+  <div id="checkoutSummary" class="summary"></div>
+  <div id="checkoutError"></div>
+  <button class="btn primary" onclick="placeOrder()">تأیید و پرداخت</button>`;
+  openModal();updateCheckoutCost()
+}
+function updateCheckoutCost(){
+  const el=document.getElementById("checkoutSummary");if(!el)return;
+  const date=document.getElementById("shipDate")?.value;
+  const productsTotal=cartItems().reduce((a,i)=>a+i.p.price*i.qty,0);
+  const shipping=date?Number(state.settings.shipping[weekdayName(date)]||0):0;
+  el.innerHTML=`<div class="row"><span>جمع محصولات</span><b>${money(productsTotal)}</b></div><div class="row"><span>هزینه ارسال${date?" ("+weekdayName(date)+")":""}</span><b>${money(shipping)}</b></div><div class="row total"><span>مبلغ نهایی</span><b>${money(productsTotal+shipping)}</b></div>`
+}
+function normalizePhone(v){
+  return String(v||"").replace(/[۰-۹]/g,d=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/[^\d+]/g,"")
+}
+function validIranPhone(v){
+  const x=normalizePhone(v).replace(/^0098/,"+98").replace(/^98/,"+98");
+  return /^(?:\+98|0)9\d{9}$/.test(x)
+}
+function normalizeDigits(v){return String(v||"").replace(/[۰-۹]/g,d=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/\D/g,"")}
+function placeOrder(){
+  const err=document.getElementById("checkoutError");
+  const date=document.getElementById("shipDate").value;
+  const name=document.getElementById("customerName").value.trim();
+  const phone=document.getElementById("customerPhone").value.trim();
+  const postal=normalizeDigits(document.getElementById("postalCode").value);
+  const address=document.getElementById("address").value.trim();
+  const min=isoDate(minShipDate());
+  if(!date||date<min)return showErr("تاریخ ارسال باید حداقل ۳ روز تقویمی بعد از امروز باشد.");
+  if(!name)return showErr("نام و نام خانوادگی را وارد کنید.");
+  if(!validIranPhone(phone))return showErr("شماره موبایل معتبر ایران را وارد کنید.");
+  if(!/^\d{10}$/.test(postal))return showErr("کد پستی باید دقیقاً ۱۰ رقم باشد.");
+  if(!address)return showErr("آدرس را وارد کنید.");
+  const items=cartItems();
+  for(const i of items){const p=state.products.find(x=>x.id===i.productId);if(!p||p.stock<i.qty)return showErr("موجودی یکی از محصولات کافی نیست؛ لطفاً سبد را بررسی کنید.")}
+  // Revalidation immediately before committing the order.
+  const weekday=weekdayName(date),shipping=Number(state.settings.shipping[weekday]||0);
+  const productsTotal=items.reduce((a,i)=>a+i.p.price*i.qty,0);
+  const order={id:uid("ORD"),createdAt:new Date().toISOString(),shipDate:date,shipWeekday:weekday,shippingCost:shipping,productsTotal,total:productsTotal+shipping,
+    customer:{name,phone,postalCode:postal,address},items:items.map(i=>({productId:i.productId,name:i.p.name,price:i.p.price,qty:i.qty})),status:"جدید",payment:"در انتظار پرداخت"};
+  state.orders.push(order);
+  items.forEach(i=>{const p=state.products.find(x=>x.id===i.productId);p.stock-=i.qty});
+  state.cart=[];
+  save();
+  closeModal();
+  if(state.settings.gateway.trim()){
+    notify("سفارش ثبت شد؛ در حال انتقال به درگاه پرداخت...",true);
+    setTimeout(()=>{location.href=state.settings.gateway.trim()},250);
+  }else{
+    notify("سفارش ثبت شد، اما لینک درگاه پرداخت در تنظیمات وارد نشده است.");
+  }
+}
+function showErr(msg){document.getElementById("checkoutError").innerHTML='<div class="notice err">'+esc(msg)+'</div>';return false}
+function openProduct(id){
+  const p=state.products.find(x=>x.id===id);if(!p)return;
+  const approved=state.reviews.filter(r=>r.productId===id&&r.approved);
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>${esc(p.name)}</h2><button class="close" onclick="closeModal()">✕</button></div>
+  <div class="product-detail"><div><img id="detailImg" class="detail-main" src="${esc(p.images?.[p.mainImage||0]||"")}" alt=""><div class="thumbs">${(p.images||[]).map((x,i)=>`<img class="thumb ${i===(p.mainImage||0)?"main":""}" src="${esc(x)}" onclick="document.getElementById('detailImg').src='${esc(x)}'">`).join("")}</div></div>
+  <div><p>${esc(p.description||"")}</p><p class="price">${money(p.price)}</p><p class="stock ${p.stock>0?"in":"out"}">${p.stock>0?"موجودی: "+p.stock+" عدد":"ناموجود"}</p><button class="btn primary" ${p.stock<=0?"disabled":""} onclick="addToCart('${p.id}');closeModal()">${p.stock>0?"افزودن به سبد":"ناموجود"}</button></div></div>
+  <hr><h3>نظرات تأییدشده</h3>${approved.length?approved.map(r=>`<div class="review"><b>${esc(r.name)}</b> <span class="stars">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</span><div>${esc(r.text)}</div></div>`).join(""):"<div class='muted'>هنوز نظری ثبت نشده است.</div>"}
+  <h3>ثبت نظر</h3><div class="form-grid"><div class="field"><label>نام</label><input id="reviewName"></div><div class="field"><label>امتیاز</label><select id="reviewRating"><option value="5">۵</option><option value="4">۴</option><option value="3">۳</option><option value="2">۲</option><option value="1">۱</option></select></div><div class="field full"><label>نظر</label><textarea id="reviewText"></textarea></div></div><button class="btn primary" onclick="submitReview('${p.id}')">ارسال نظر برای بررسی</button>`;
+  openModal()
+}
+function submitReview(pid){
+  const name=document.getElementById("reviewName").value.trim(),text=document.getElementById("reviewText").value.trim(),rating=Number(document.getElementById("reviewRating").value);
+  if(!name||!text)return notify("نام و متن نظر را وارد کنید.");
+  state.reviews.push({id:uid("REV"),productId:pid,name,text,rating,approved:false,createdAt:new Date().toISOString()});save();closeModal();notify("نظر شما ثبت شد و پس از تأیید نمایش داده می‌شود.",true)
+}
+function openModal(){document.getElementById("modal").classList.add("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+
+function openAdminLogin(){
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>ورود مدیریت</h2><button class="close" onclick="closeModal()">✕</button></div><div class="field"><label>رمز مدیریت</label><input id="adminPass" type="password" autocomplete="current-password"></div><div id="loginErr"></div><button class="btn primary" onclick="loginAdmin()">ورود</button>`;
+  openModal()
+}
+function loginAdmin(){
+  if(document.getElementById("adminPass").value===state.adminPassword){closeModal();openAdmin()}else document.getElementById("loginErr").innerHTML='<div class="notice err">رمز مدیریت نادرست است.</div>'
+}
+function openAdmin(){
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>پنل مدیریت</h2><button class="close" onclick="closeModal()">✕</button></div>
+  <div class="tabs">
+    <button class="tab active" onclick="adminTab(this,'adminProducts')">محصولات</button>
+    <button class="tab" onclick="adminTab(this,'adminOrders')">سفارش‌ها</button>
+    <button class="tab" onclick="adminTab(this,'adminReviews')">نظرات</button>
+    <button class="tab" onclick="adminTab(this,'adminSettings')">تنظیمات</button>
+    <button class="tab" onclick="adminTab(this,'adminFinance')">مالی</button>
+  </div>
+  <section id="adminProducts" class="panel-section active"></section><section id="adminOrders" class="panel-section"></section><section id="adminReviews" class="panel-section"></section><section id="adminSettings" class="panel-section"></section><section id="adminFinance" class="panel-section"></section>`;
+  renderAdminAll();openModal()
+}
+function adminTab(btn,id){document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));btn.classList.add("active");document.querySelectorAll(".panel-section").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active")}
+function renderAdminAll(){renderAdminProducts();renderAdminOrders();renderAdminReviews();renderAdminSettings();renderAdminFinance()}
+function renderAdminProducts(){
+  document.getElementById("adminProducts").innerHTML=`<div class="actions"><button class="btn primary" onclick="editProduct()">افزودن محصول</button></div>
+  <table class="admin-table"><tr><th>محصول</th><th>قیمت</th><th>موجودی تعداد</th><th>تصاویر</th><th>عملیات</th></tr>${state.products.map(p=>`<tr><td>${esc(p.name)}</td><td>${money(p.price)}</td><td>${p.stock}</td><td>${p.images?.length||0}</td><td><button class="btn small" onclick="editProduct('${p.id}')">ویرایش</button> <button class="btn danger small" onclick="deleteProduct('${p.id}')">حذف</button></td></tr>`).join("")}</table>`
+}
+function editProduct(id){
+  const p=id?state.products.find(x=>x.id===id):{id:"",name:"",price:0,stock:0,description:"",images:[],mainImage:0};
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>${id?"ویرایش":"افزودن"} محصول</h2><button class="close" onclick="openAdmin()">✕</button></div>
+  <div class="form-grid"><div class="field"><label>نام</label><input id="epName" value="${esc(p.name)}"></div><div class="field"><label>قیمت (تومان)</label><input id="epPrice" type="number" min="0" value="${p.price}"></div><div class="field"><label>موجودی تعداد</label><input id="epStock" type="number" min="0" value="${p.stock}"></div><div class="field"><label>تصویر جدید (URL)</label><input id="epImage" placeholder="https://..."><button class="btn small" onclick="addProductImage()">افزودن تصویر</button></div><div class="field full"><label>توضیحات</label><textarea id="epDesc">${esc(p.description)}</textarea></div><div class="field full"><label>تصاویر</label><div id="epImages">${renderImageEditor(p)}</div></div></div>
+  <button class="btn primary" onclick="saveProduct('${id||""}')">ذخیره محصول</button>`;
+  openModal()
+}
+function renderImageEditor(p){
+  return (p.images||[]).map((x,i)=>`<div class="image-item"><img src="${esc(x)}"><span style="flex:1">تصویر ${i+1}${i===(p.mainImage||0)?" — اصلی":""}</span><button class="btn small" onclick="setMainImage(${i})">اصلی</button><button class="btn danger small" onclick="deleteImage(${i})">حذف</button><button class="btn small" onclick="moveImage(${i},-1)">↑</button><button class="btn small" onclick="moveImage(${i},1)">↓</button></div>`).join("")||"<span class='muted'>تصویری اضافه نشده است.</span>"
+}
+function tempProduct(){return {images:[],mainImage:0}}
+function getEditorProduct(){
+  const id=window._editingProductId;
+  return id?state.products.find(x=>x.id===id):window._newProduct||(window._newProduct=tempProduct())
+}
+function refreshImageEditor(){document.getElementById("epImages").innerHTML=renderImageEditor(getEditorProduct())}
+function addProductImage(){
+  const url=document.getElementById("epImage").value.trim();if(!url)return notify("آدرس تصویر را وارد کنید.");
+  const p=getEditorProduct();p.images.push(url);document.getElementById("epImage").value="";refreshImageEditor()
+}
+function setMainImage(i){const p=getEditorProduct();if(i>=0&&i<p.images.length)p.mainImage=i;refreshImageEditor()}
+function deleteImage(i){const p=getEditorProduct();p.images.splice(i,1);if(!p.images.length)p.mainImage=0;else if(p.mainImage>=p.images.length)p.mainImage=p.images.length-1;refreshImageEditor()}
+function moveImage(i,d){const p=getEditorProduct(),j=i+d;if(j<0||j>=p.images.length)return;[p.images[i],p.images[j]]=[p.images[j],p.images[i]];if(p.mainImage===i)p.mainImage=j;else if(p.mainImage===j)p.mainImage=i;refreshImageEditor()}
+function saveProduct(id){
+  window._editingProductId=id||null;
+  const p=getEditorProduct();const name=document.getElementById("epName").value.trim(),price=Number(document.getElementById("epPrice").value),stock=Number(document.getElementById("epStock").value),description=document.getElementById("epDesc").value.trim();
+  if(!name)return notify("نام محصول الزامی است.");if(!Number.isFinite(price)||price<0)return notify("قیمت نامعتبر است.");if(!Number.isInteger(stock)||stock<0)return notify("موجودی باید یک عدد صحیح صفر یا بیشتر باشد.");
+  if(id){p.name=name;p.price=price;p.stock=stock;p.description=description}
+  else {p.name=name;p.price=price;p.stock=stock;p.description=description;p.id=uid("P");state.products.push(p)}
+  window._newProduct=null;window._editingProductId=null;save();openAdmin()
+}
+function deleteProduct(id){
+  if(state.cart.some(x=>x.productId===id))return notify("این محصول در سبد خرید قرار دارد؛ ابتدا آن را از سبد حذف کنید.");
+  if(!confirm("آیا از حذف محصول مطمئن هستید؟"))return;
+  state.products=state.products.filter(x=>x.id!==id);save();openAdmin()
+}
+function renderAdminOrders(){
+  const paid=state.orders.filter(o=>o.payment==="تأیید شده");
+  document.getElementById("adminOrders").innerHTML=`<p class="muted">فقط پرداخت‌های تأییدشده در درآمد مالی لحاظ می‌شوند.</p><table class="admin-table"><tr><th>سفارش</th><th>مشتری</th><th>ارسال</th><th>مبلغ</th><th>پرداخت</th><th>وضعیت</th><th>عملیات</th></tr>${state.orders.map(o=>`<tr><td>${esc(o.id)}<br><small>${new Date(o.createdAt).toLocaleString("fa-IR")}</small></td><td>${esc(o.customer.name)}<br>${esc(o.customer.phone)}<br>${esc(o.customer.postalCode)}</td><td>${esc(o.shipDate)}<br>${esc(o.shipWeekday)}<br>${money(o.shippingCost)}</td><td>${money(o.total)}</td><td><select onchange="setPayment('${o.id}',this.value)"><option ${o.payment==="در انتظار پرداخت"?"selected":""}>در انتظار پرداخت</option><option ${o.payment==="تأیید شده"?"selected":""}>تأیید شده</option><option ${o.payment==="ناموفق"?"selected":""}>ناموفق</option></select></td><td><select onchange="setStatus('${o.id}',this.value)">${STATUS.map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select></td><td><button class="btn small" onclick="showOrder('${o.id}')">جزئیات</button></td></tr>`).join("")||"<tr><td colspan='7'>سفارشی ثبت نشده است.</td></tr>"}</table>`
+}
+function setPayment(id,v){const o=state.orders.find(x=>x.id===id);if(o){o.payment=v;save();openAdmin()}}
+function setStatus(id,v){const o=state.orders.find(x=>x.id===id);if(o){o.status=v;save();openAdmin()}}
+function showOrder(id){
+  const o=state.orders.find(x=>x.id===id);if(!o)return;
+  document.getElementById("modalBox").innerHTML=`<div class="modal-head"><h2>جزئیات ${esc(o.id)}</h2><button class="close" onclick="openAdmin()">✕</button></div><div class="summary"><p><b>مشتری:</b> ${esc(o.customer.name)}</p><p><b>موبایل:</b> ${esc(o.customer.phone)}</p><p><b>کد پستی:</b> ${esc(o.customer.postalCode)}</p><p><b>آدرس:</b> ${esc(o.customer.address)}</p><p><b>تاریخ ارسال:</b> ${esc(o.shipDate)} (${esc(o.shipWeekday)})</p><p><b>هزینه ارسال ذخیره‌شده:</b> ${money(o.shippingCost)}</p></div><table class="admin-table"><tr><th>محصول</th><th>تعداد</th><th>قیمت واحد</th></tr>${o.items.map(i=>`<tr><td>${esc(i.name)}</td><td>${i.qty}</td><td>${money(i.price)}</td></tr>`).join("")}</table><div class="summary total"><div class="row"><span>مبلغ نهایی</span><b>${money(o.total)}</b></div></div>`
+  openModal()
+}
+function renderAdminReviews(){
+  document.getElementById("adminReviews").innerHTML=`<table class="admin-table"><tr><th>محصول</th><th>نام</th><th>امتیاز</th><th>نظر</th><th>وضعیت</th><th>عملیات</th></tr>${state.reviews.map(r=>{const p=state.products.find(x=>x.id===r.productId);return `<tr><td>${esc(p?.name||"محصول حذف‌شده")}</td><td>${esc(r.name)}</td><td>${r.rating}</td><td>${esc(r.text)}</td><td>${r.approved?"تأیید شده":"در انتظار"}</td><td><button class="btn small" onclick="toggleReview('${r.id}')">${r.approved?"لغو تأیید":"تأیید"}</button> <button class="btn danger small" onclick="deleteReview('${r.id}')">حذف</button></td></tr>`}).join("")||"<tr><td colspan='6'>نظری وجود ندارد.</td></tr>"}</table>`
+}
+function toggleReview(id){const r=state.reviews.find(x=>x.id===id);if(r){r.approved=!r.approved;save();openAdmin()}}
+function deleteReview(id){state.reviews=state.reviews.filter(x=>x.id!==id);save();openAdmin()}
+function renderAdminSettings(){
+  const s=state.settings;
+  document.getElementById("adminSettings").innerHTML=`<h3>هزینه ارسال هر روز هفته</h3><div class="form-grid">${DAY_NAMES.map(d=>`<div class="field"><label>${d}</label><input id="ship_${d}" type="number" min="0" value="${Number(s.shipping[d]||0)}"></div>`).join("")}
+  <div class="field full"><label>لینک درگاه پرداخت</label><input id="gateway" value="${esc(s.gateway)}" placeholder="https://example.com/payment"></div>
+  <div class="field"><label>تلفن تماس</label><input id="contactPhone" value="${esc(s.contact.phone)}"></div><div class="field"><label>ایمیل</label><input id="contactEmail" value="${esc(s.contact.email)}"></div><div class="field full"><label>آدرس</label><textarea id="contactAddress">${esc(s.contact.address)}</textarea></div></div>
+  <button class="btn primary" onclick="saveSettings()">ذخیره تنظیمات</button><div class="notice ok">تغییر هزینه ارسال فقط روی سفارش‌های جدید اثر دارد؛ هزینه ذخیره‌شده سفارش‌های قبلی تغییر نمی‌کند.</div>`
+}
+function saveSettings(){
+  DAY_NAMES.forEach(d=>state.settings.shipping[d]=Math.max(0,Number(document.getElementById("ship_"+d).value)||0));
+  state.settings.gateway=document.getElementById("gateway").value.trim();
+  state.settings.contact={phone:document.getElementById("contactPhone").value.trim(),email:document.getElementById("contactEmail").value.trim(),address:document.getElementById("contactAddress").value.trim()};
+  save();openAdmin();notify("تنظیمات ذخیره شد.",true)
+}
+function renderAdminFinance(){
+  const paid=state.orders.filter(o=>o.payment==="تأیید شده");
+  const revenue=paid.reduce((a,o)=>a+o.total,0);
+  document.getElementById("adminFinance").innerHTML=`<div class="summary"><div class="row"><span>تعداد پرداخت‌های تأییدشده</span><b>${paid.length}</b></div><div class="row total"><span>درآمد ثبت‌شده</span><b>${money(revenue)}</b></div></div><p class="muted">درآمد این بخش فقط از سفارش‌هایی محاسبه می‌شود که وضعیت پرداختشان «تأیید شده» باشد. هیچ موجودی مالی اولیه یا ساختگی تعریف نشده است.</p>`
+}
+renderProducts();updateCartCount();
+</script>
+</body>
+</html>
